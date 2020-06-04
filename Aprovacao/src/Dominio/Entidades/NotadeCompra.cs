@@ -1,12 +1,14 @@
 ﻿using Dominio.Enums;
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Dominio.Entidades
 {
     public class NotadeCompra : EntidadeBase
     {
+        public NotadeCompra()
+        {
+
+        }
         public NotadeCompra(DateTime dataEmissao, decimal valorMercadorias, decimal valorDesconto, decimal valorFrete)
         {
             GerarNovoId();

@@ -1,11 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Dominio.Entidades
+﻿namespace Dominio.Entidades
 {
     public class AutorizacaoConfig : EntidadeBase
     {
+        public AutorizacaoConfig()
+        {
+        }
+
         public AutorizacaoConfig(decimal valorMinimo, decimal valorMaxino, int qtdeVistos, int qtdeAprovacoes)
         {
             GerarNovoId();

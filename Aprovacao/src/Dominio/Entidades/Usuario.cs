@@ -1,13 +1,13 @@
 ﻿using Dominio.Enums;
-using System;
-using System.Collections.Generic;
-using System.Net.NetworkInformation;
-using System.Text;
 
 namespace Dominio.Entidades
 {
     public class Usuario : EntidadeBase
     {
+        public Usuario()
+        {
+
+        }
         public Usuario(string login, string senha, decimal valorMinimo, decimal valorMaxino, PapelAprovacao papel)
         {
             GerarNovoId();
