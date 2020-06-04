@@ -1,9 +1,0 @@
-﻿1>------ Rebuild All started: Project: Dominio, Configuration: Debug Any CPU ------
-1>Dominio -> C:\source\aprovacaodenotas\Aprovacao\src\Dominio\bin\Debug\netstandard2.1\Dominio.dll
-2>------ Rebuild All started: Project: Aplicacao, Configuration: Debug Any CPU ------
-2>Aplicacao -> C:\source\aprovacaodenotas\Aprovacao\src\Aplicacao\bin\Debug\netstandard2.1\Aplicacao.dll
-3>------ Rebuild All started: Project: Infra, Configuration: Debug Any CPU ------
-3>Infra -> C:\source\aprovacaodenotas\Aprovacao\src\Infra\bin\Debug\netstandard2.1\Infra.dll
-4>------ Rebuild All started: Project: API, Configuration: Debug Any CPU ------
-4>API -> C:\source\aprovacaodenotas\Aprovacao\src\API\bin\Debug\netcoreapp3.1\API.dll
-========== Rebuild All: 4 succeeded, 0 failed, 0 skipped ==========
