@@ -4,6 +4,7 @@ using Infra;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -30,7 +31,19 @@ namespace API
             services.AdicionarInfra();
 
 
+            //services.AddCors(options => {
+            //    options.AddDefaultPolicy(builder => builder
+            //        .SetIsOriginAllowed(_=>true)
+            //        .AllowAnyMethod()
+            //        .AllowAnyHeader()
+            //        .AllowCredentials());
+            //});
+
+
+
             services.AddControllers();
+
+            services.AddCors();
 
             var key = Encoding.ASCII.GetBytes(Configuracao.ChaveJwt);
             services.AddAuthentication(x =>
@@ -51,24 +64,54 @@ namespace API
                     };
                 });
 
-            
-            services.AddSwaggerGen(x =>
-            {
-                x.SwaggerDoc(name: "v1", new OpenApiInfo { Title = "Aprovação API", Version = "v1" });
+
+            //services.AddSwaggerGen(x =>
+            //{
+            //    x.SwaggerDoc(name: "v1", new OpenApiInfo { Title = "Aprovação API", Version = "v1" });
 
 
-                x.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+            //    x.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+            //    {
+            //        Description = "Use Autorização Bearer. Exemplo: \"Bearer {token}\"",
+            //        Name = "Authorization",
+            //        In = ParameterLocation.Header,
+            //        Type = SecuritySchemeType.ApiKey,
+            //        Scheme = "tomsAuth"
+            //    });
+
+            //    x.OperationFilter<SecurityRequirementsOperationFilter>();
+
+            //});
+
+            services.AddSwaggerGen(c => {
+
+                c.SwaggerDoc(name: "v1", new OpenApiInfo { Title = "Aprovação API", Version = "v1" });
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
-                    Description = "Use Autorização Bearer. Exemplo: \"Bearer {token}\"",
                     Name = "Authorization",
-                    In = ParameterLocation.Header,
                     Type = SecuritySchemeType.ApiKey,
-                    Scheme = "tomsAuth"
+                    Scheme = "Bearer",
+                    BearerFormat = "JWT",
+                    In = ParameterLocation.Header,
+                    Description = "JWT Authorization header using the Bearer scheme."
                 });
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                          new OpenApiSecurityScheme
+                            {
+                                Reference = new OpenApiReference
+                                {
+                                    Type = ReferenceType.SecurityScheme,
+                                    Id = "Bearer"
+                                }
+                            },
+                            new string[] {}
 
-                x.OperationFilter<SecurityRequirementsOperationFilter>();
-
+                    }
+                });
             });
+
 
 
         }
@@ -89,8 +132,17 @@ namespace API
 
             app.UseHttpsRedirection();
 
+          
+            
 
             app.UseRouting();
+
+            //app.UseCors();
+
+
+            app.UseCors(
+                options => options.SetIsOriginAllowed(x => _ = true).AllowAnyMethod().AllowAnyHeader().AllowCredentials()
+            );
 
             app.UseAuthentication();
             app.UseAuthorization();
@@ -100,6 +152,7 @@ namespace API
                 endpoints.MapControllers();
             });
 
+           
 
         }
     }
