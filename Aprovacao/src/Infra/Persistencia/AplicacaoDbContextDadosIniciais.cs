@@ -1,11 +1,6 @@
-﻿using Aplicacao.Interfaces;
-using Dominio.Entidades;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage;
+﻿using Dominio.Entidades;
 using System;
 using System.Linq;
-using System.Reflection;
-using System.Threading;
 using System.Threading.Tasks;
 
 
