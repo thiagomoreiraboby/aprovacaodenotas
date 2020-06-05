@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Aplicacao.Models;
 using Aplicacao.Usuarios.Commands;
 using Aplicacao.Usuarios.Queries;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -11,24 +12,35 @@ namespace API.Controllers
     public class UsuarioController : ApiControllerBase
     {
 
-        [HttpPost("login")]
-        public async Task<ActionResult<UsuarioDTO>> LogarApi([FromBody] string login, string senha)
+        [HttpPost("Autenticar")]
+        public async Task<ActionResult<dynamic>> AutenticarApi([FromBody] LogarUsuariosQuery logarUsuarios)
         {
-            return await Mediator.Send(new LogarUsuariosQuery { Login = login, Senha = senha });
+            var usuario = Mediator.Send(logarUsuarios).Result;
+            if(usuario == null)
+                return NotFound(new { message = "Usuário ou senha inválidos" });
+            return new
+            {
+                Codigo = usuario.Id,
+                Nome = usuario.Login,
+                TokenApi = Configuracoes.Configuracao.GeneradorToken(usuario)
+            };
         }
 
         [HttpGet("{id}")]
+        [Authorize]
         public async Task<ActionResult<UsuarioDTO>> Get(Guid id)
         {
             return await Mediator.Send(new ListarUsuariosPorIDQuery { Id = id });
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<ActionResult<Guid>> Post(CriarUsuarioCommand command)
         {
             return await Mediator.Send(command);
         }
 
+        [Authorize]
         [HttpGet]
         public async Task<IList<UsuarioDTO>> Get()
         {
@@ -36,6 +48,7 @@ namespace API.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize]
         public async Task<ActionResult<Guid>> Put(Guid id, UpdateUsuarioCommand command)
         {
             if (id != command.Id)
@@ -49,6 +62,7 @@ namespace API.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<ActionResult> Delete(Guid id)
         {
             await Mediator.Send(new DeleteUsuarioCommand { Id = id });

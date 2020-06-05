@@ -13,6 +13,7 @@ namespace Infra.Interfaces.Persistencia
         {
             if (!context.Usuarios.Any())
             {
+                context.Usuarios.Add(new Usuario("admin", "admin", 0M, 0M, Dominio.Enums.PapelAprovacao.Adm));
                 context.Usuarios.Add(new Usuario("Visto1", "123", 0M, 1000M, Dominio.Enums.PapelAprovacao.Visto));
                 context.Usuarios.Add(new Usuario("Visto2", "123", 1001M, 10000M, Dominio.Enums.PapelAprovacao.Visto));
                 context.Usuarios.Add(new Usuario("Visto3", "123", 10001M, 50000M, Dominio.Enums.PapelAprovacao.Visto));

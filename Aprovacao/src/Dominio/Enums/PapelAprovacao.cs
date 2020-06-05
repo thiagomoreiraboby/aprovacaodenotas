@@ -4,9 +4,11 @@ namespace Dominio.Enums
 {
     public enum PapelAprovacao
     {
+        [Description("Administrador")]
+        Adm = 0,
         [Description("Visto")]
-        Visto = 0,
+        Visto = 1,
         [Description("Aprovador")]
-        Aprovador = 1
+        Aprovador = 2
     }
 }

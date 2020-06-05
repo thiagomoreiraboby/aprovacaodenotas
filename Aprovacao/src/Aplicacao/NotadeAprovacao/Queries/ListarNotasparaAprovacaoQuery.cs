@@ -39,6 +39,8 @@ namespace Aplicacao.NotadeAprovacao.Queries
 
             foreach (var nota in listadenotas)
             {
+                if (nota.ValorTotal > usuario.ValorMaxino || nota.ValorTotal < usuario.ValorMinimo)
+                    continue;
                 var hist = _context.AutorizacaoHistoricos.Where(x => x.Nota.Id == nota.Id).ToList();
                 if (ValidacoeseVerificacoes.VerificarConfiguracaoAutorizacaoDiponivel(_context, nota, hist, usuario))
                 {
