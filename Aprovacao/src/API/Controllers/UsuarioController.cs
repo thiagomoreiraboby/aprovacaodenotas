@@ -14,6 +14,12 @@ namespace API.Controllers
     public class UsuarioController : ApiControllerBase
     {
 
+        [HttpPost("login")]
+        public async Task<ActionResult<UsuarioDTO>> LogarApi([FromBody] string login, string senha)
+        {
+            return await Mediator.Send(new LogarUsuariosQuery { Login = login, Senha = senha });
+        }
+
         [HttpGet("{id}")]
         public async Task<ActionResult<UsuarioDTO>> Get(Guid id)
         {
