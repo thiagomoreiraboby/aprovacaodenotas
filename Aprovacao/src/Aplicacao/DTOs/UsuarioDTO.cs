@@ -12,6 +12,7 @@ namespace Aplicacao.Models
         public decimal ValorMinimo { get; set; }
         public decimal ValorMaxino { get; set; }
         public PapelAprovacaoDTO Papel { get; set; }
+        public string NPapel { get; set; }
 
         public void Mapping(Profile profile)
         {

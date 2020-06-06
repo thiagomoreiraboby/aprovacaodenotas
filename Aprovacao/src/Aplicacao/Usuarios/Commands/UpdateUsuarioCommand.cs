@@ -2,6 +2,7 @@
 using Aplicacao.Models;
 using AutoMapper;
 using Dominio.Entidades;
+using Dominio.Enums;
 using MediatR;
 using System;
 using System.Threading;
@@ -26,11 +27,13 @@ namespace Aplicacao.Usuarios.Commands
 
         public async Task<Guid> Handle(UpdateUsuarioCommand request, CancellationToken cancellationToken)
         {
-            var entidade = _mapper.Map<Usuario>(request);
-            _context.Usuarios.Update(entidade);
 
+            var entidade =
+                new Usuario(request.Id, request.Login, request.Senha, request.ValorMinimo, request.ValorMaxino, (PapelAprovacao)request.Papel);
+            _context.Usuarios.Update(entidade);
+            
             await _context.SaveChangesAsync(cancellationToken);
-            return entidade.Id;
+            return ((Usuario)entidade).Id;
         }
     }
 }

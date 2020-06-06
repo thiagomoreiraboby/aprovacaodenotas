@@ -1,4 +1,5 @@
 ﻿using Dominio.Enums;
+using System;
 
 namespace Dominio.Entidades
 {
@@ -8,9 +9,20 @@ namespace Dominio.Entidades
         {
 
         }
+
         public Usuario(string login, string senha, decimal valorMinimo, decimal valorMaxino, PapelAprovacao papel)
         {
             GerarNovoId();
+            Login = login;
+            Senha = senha;
+            ValorMinimo = valorMinimo;
+            ValorMaxino = valorMaxino;
+            Papel = papel;
+        }
+
+        public Usuario(Guid id, string login, string senha, decimal valorMinimo, decimal valorMaxino, PapelAprovacao papel)
+        {
+            Id = id;
             Login = login;
             Senha = senha;
             ValorMinimo = valorMinimo;

@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { environment } from 'src/environments/environment';
+import { UsuarioService } from '../servicos/usuario.service';
+import { Router, NavigationEnd } from '@angular/router';
 
 @Component({
   selector: 'app-menunav',
@@ -8,10 +10,35 @@ import { environment } from 'src/environments/environment';
 })
 export class MenunavComponent implements OnInit {
 
+  logout: boolean;
+  NomeUsuario: string;
   caminhoswagger = environment.API_URL + "/swagger/index.html";
-  constructor() { }
+  moduloadm: boolean;
+
+  constructor(private servico: UsuarioService, private router: Router) {
+
+   }
 
   ngOnInit(): void {
+      if(this.servico.usuarioLogado != null){
+        this.logout = false;
+        this.NomeUsuario = this.servico.usuarioLogado.nome;
+        this.moduloadm = this.servico.moduloadm;
+      }
+      else{
+        this.logout = true;
+        this.NomeUsuario = "";
+      }
+  }
+
+  LogoutSistema(){
+    this.servico.logout();
+    this.logout = false;
+    this.router.navigate([""]);
+
+  }
+
+  ngOnDestroy (){
   }
 
 }

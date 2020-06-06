@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, LOCALE_ID } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
@@ -12,6 +12,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HomeComponent } from './home/home.component';
 import { PesquisanotasComponent } from './pesquisanotas/pesquisanotas.component';
 import { LoginComponent } from './login/login.component';
+import { PesquisausuariosComponent } from './pesquisausuarios/pesquisausuarios.component';
+
 
 
 
@@ -22,7 +24,8 @@ import { LoginComponent } from './login/login.component';
     MenunavComponent,
     HomeComponent,
     PesquisanotasComponent,
-    LoginComponent
+    LoginComponent,
+    PesquisausuariosComponent
   ],
   imports: [
     BrowserModule,
@@ -33,7 +36,7 @@ import { LoginComponent } from './login/login.component';
     FormsModule,
     ReactiveFormsModule
   ],
-  providers: [],
+  providers: [ ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

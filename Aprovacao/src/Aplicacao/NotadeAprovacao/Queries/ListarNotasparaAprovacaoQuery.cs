@@ -1,9 +1,11 @@
 ﻿using Aplicacao.Interfaces;
 using Aplicacao.Models;
 using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Dominio.Entidades;
 using Dominio.Enums;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,15 +35,29 @@ namespace Aplicacao.NotadeAprovacao.Queries
         public async Task<IList<NotadeCompraDTO>> Handle(ListarNotasparaAprovacaoQuery request, CancellationToken cancellationToken)
         {
             var listaresultado = new List<NotadeCompraDTO>();
-            var usuario = _context.Usuarios.Where(x => x.Id == request.IdUsuario).SingleOrDefault();
+            var usuario = _context.Usuarios.SingleOrDefault(x => x.Id == request.IdUsuario);
+            if(usuario == null)
+                return listaresultado;
 
-            var listadenotas = _context.NotadeCompras.Where(GetQuery(request)).ToList();
+            //teste adm
+            if (usuario.Papel == PapelAprovacao.Adm)
+            {
+                listaresultado = await _context.NotadeCompras.ProjectTo<NotadeCompraDTO>(_mapper.ConfigurationProvider).OrderBy(o => o.DataEmissao).ToListAsync(cancellationToken);
+                listaresultado.ForEach(x => x.NStatus = x.Status.ToString());
 
+                return listaresultado;
+            }
+
+
+
+           var listadenotas = _context.NotadeCompras.Where(GetQuery(request, usuario)).OrderBy(o=> o.DataEmissao).ToList();
+            
             foreach (var nota in listadenotas)
             {
-                if (nota.ValorTotal > usuario.ValorMaxino || nota.ValorTotal < usuario.ValorMinimo)
-                    continue;
+                if (_context.AutorizacaoHistoricos.Any(x => x.Nota.Id == nota.Id && x.Usuario.Id == usuario.Id))
+                   continue;
                 var hist = _context.AutorizacaoHistoricos.Where(x => x.Nota.Id == nota.Id).ToList();
+
                 if (ValidacoeseVerificacoes.VerificarConfiguracaoAutorizacaoDiponivel(_context, nota, hist, usuario))
                 {
                     listaresultado.Add(_mapper.Map<NotadeCompraDTO>(nota));
@@ -51,11 +67,13 @@ namespace Aplicacao.NotadeAprovacao.Queries
             return listaresultado;
         }
 
-        private static Expression<Func<NotadeCompra, bool>> GetQuery(ListarNotasparaAprovacaoQuery request)
+        private static Expression<Func<NotadeCompra, bool>> GetQuery(ListarNotasparaAprovacaoQuery request, Usuario usuario)
         {
-            return x => request.DataInicio != null && request.DataFim != null 
-            ? x.DataEmissao >= request.DataInicio && x.DataEmissao <= request.DataFim && x.Status == StatusNota.Pendente
-            : x.Status == StatusNota.Pendente;
+            return (x =>
+                x.Status == StatusNota.Pendente &&
+                 (x.ValorTotal >= usuario.ValorMinimo && x.ValorTotal <= usuario.ValorMaxino) &&
+                ((request.DataInicio == null && request.DataFim == null) || x.DataEmissao >= request.DataInicio && x.DataEmissao <= request.DataFim)
+            );
         }
     }
 }

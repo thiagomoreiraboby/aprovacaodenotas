@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { UsuarioService } from '../servicos/usuario.service';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { usuario } from '../Model/usuario';
 
 @Component({
   selector: 'app-login',
@@ -14,7 +15,6 @@ export class LoginComponent implements OnInit {
   loading = false;
   submitted = false;
   returnUrl: string;
-  Usuario: string;
 
   constructor(
     private servico: UsuarioService,
@@ -23,15 +23,16 @@ export class LoginComponent implements OnInit {
     private router: Router,
     ) { }
 
-
+    mySubscription: any;
 
   ngOnInit(): void {
+
     this.loginForm = this.formBuilder.group({
-      Login: ['', Validators.required],
+      Usuario: ['', Validators.required],
       Senha: ['', Validators.required]
   });
 
-  this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+  this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '';
   }
 
   get f() { return this.loginForm.controls; }
@@ -43,14 +44,16 @@ export class LoginComponent implements OnInit {
       return;
   }
   this.loading = true;
-    this.servico.autenticarApi(this.f.Login.value, this.f.Senha.value).subscribe(
-      retorno => {
-        this.Usuario = JSON.stringify(retorno);
+    this.servico.autenticarApi(this.f.Usuario.value, this.f.Senha.value).subscribe(
+      () => {
         this.router.navigate([this.returnUrl]);
+        window.location.reload();
       },
       error =>{
         this.loading = false;
     });
+
+
   }
 
 }

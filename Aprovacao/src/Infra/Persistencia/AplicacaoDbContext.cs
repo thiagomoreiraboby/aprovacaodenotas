@@ -1,7 +1,9 @@
-﻿using Aplicacao.Interfaces;
+﻿
+using Aplicacao.Interfaces;
 using Dominio.Entidades;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
+using System.Data;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
@@ -29,14 +31,14 @@ namespace Infra.Interfaces.Persistencia
                 return base.SaveChangesAsync(cancellationToken);
         }
 
-        public async Task BeginTransactionAsync()
+        public async Task BeginTransactionAsync(CancellationToken cancellationToken = new CancellationToken())
         {
             if (_currentTransaction != null)
             {
                 return;
             }
 
-            _currentTransaction = await base.Database.BeginTransactionAsync().ConfigureAwait(false);
+            _currentTransaction = await base.Database.BeginTransactionAsync(cancellationToken);
         }
 
         public async Task CommitTransactionAsync()

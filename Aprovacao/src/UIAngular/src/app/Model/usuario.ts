@@ -1,3 +1,6 @@
-export class usuario{
-  constructor(Codigo: string, Nome: string, TokenApi:string) { }
+export interface usuario{
+  codigo: string;
+  nome: string;
+  tokenapi:string;
+  papel:string;
 }

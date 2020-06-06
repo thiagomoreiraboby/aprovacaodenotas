@@ -7,7 +7,8 @@ namespace Dominio.Entidades
     {
         public AutorizacaoHistorico()
         {
-
+            Usuario = new Usuario();
+            Nota = new NotadeCompra();
         }
         public AutorizacaoHistorico(DateTime data, Usuario usuario, NotadeCompra nota, PapelAprovacao papel)
         {

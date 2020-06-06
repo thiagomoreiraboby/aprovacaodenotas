@@ -26,27 +26,27 @@ namespace Aplicacao.NotadeAprovacao.Commands
         {
             try
             {
-                await _context.BeginTransactionAsync();
-                var usuario = _context.Usuarios.Where(x => x.Id == request.IdUsuario).SingleOrDefault();
-                var nota = _context.NotadeCompras.Where(x => x.Id == request.IdNota).SingleOrDefault();
+                //await _context.BeginTransactionAsync(cancellationToken);
+                var usuario = _context.Usuarios.SingleOrDefault(x => x.Id == request.IdUsuario);
+                var nota = _context.NotadeCompras.SingleOrDefault(x => x.Id == request.IdNota);
 
 
                 _context.AutorizacaoHistoricos.Add(new AutorizacaoHistorico(DateTime.Now, usuario, nota, usuario.Papel));
-                ;
+                
 
-                if (ValidacoeseVerificacoes.VerificarConfiguracaoAutorizacao(_context, nota))
+                if (ValidacoeseVerificacoes.VerificarConfiguracaoAutorizacao(_context, nota, usuario.Papel))
                 {
                     nota.AprovarNota();
                     _context.NotadeCompras.Update(nota);
                 }
 
-                await _context.CommitTransactionAsync();
+                await _context.SaveChangesAsync(cancellationToken);
                 return true;
 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                _context.RollbackTransaction();
+                //_context.RollbackTransaction();
                 return false;
             }
 

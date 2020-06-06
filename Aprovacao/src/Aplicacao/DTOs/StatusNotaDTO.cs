@@ -4,9 +4,9 @@ namespace Aplicacao.Models
 {
     public enum StatusNotaDTO
     {
-        [Description("Visto")]
-        Visto = 0,
-        [Description("Aprovador")]
-        Aprovador = 1
+        [Description("Pendente")]
+        Pendente = 0,
+        [Description("Aprovada")]
+        Aprovada = 1
     }
 }

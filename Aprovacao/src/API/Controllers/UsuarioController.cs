@@ -20,9 +20,11 @@ namespace API.Controllers
                 return NotFound(new { message = "Usuário ou senha inválidos" });
             return new
             {
-                Codigo = usuario.Id,
-                Nome = usuario.Login,
-                TokenApi = Configuracoes.Configuracao.GeneradorToken(usuario)
+                codigo = usuario.Id,
+                nome = usuario.Login,
+                tokenapi = Configuracoes.Configuracao.GeneradorToken(usuario),
+                papel = usuario.Papel.ToString()
+
             };
         }
 

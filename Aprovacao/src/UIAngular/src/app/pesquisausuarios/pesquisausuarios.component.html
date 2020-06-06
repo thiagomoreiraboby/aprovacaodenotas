@@ -1,0 +1,25 @@
+<div class="row">
+    <button type="button" class="btn btn-primary mx-sm-3 mb-2" (click)="pesquisar()">Pesquisar</button>
+</div>
+
+<div class="row">
+    <h1>Usuários</h1>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Login</th>
+                <th scope="col">Valor Minimo</th>
+                <th scope="col">Valor Maximo</th>
+                <th scope="col">Papel</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of usuarios">
+                <td>{{ item.login }}</td>
+                <td>{{ item.valorMinimo | currency:'R$' }}</td>
+                <td>{{ item.valorMaxino | currency:'R$' }}</td>
+                <td>{{ item.nPapel }}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

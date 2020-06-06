@@ -5,6 +5,7 @@ namespace Dominio.Entidades
 {
     public class NotadeCompra : EntidadeBase
     {
+        
         public NotadeCompra()
         {
 
@@ -17,18 +18,21 @@ namespace Dominio.Entidades
             ValorDesconto = valorDesconto;
             ValorFrete = valorFrete;
             Status = StatusNota.Pendente;
+            ValorTotal = ValorMercadorias + ValorFrete - ValorDesconto;
         }
 
         public DateTime DataEmissao { get; private set; }
         public decimal ValorMercadorias { get; private set; }
         public decimal ValorDesconto { get; private set; }
         public decimal ValorFrete { get; private set; }
-        public decimal ValorTotal => ValorMercadorias + ValorFrete - ValorDesconto;
+        public decimal ValorTotal { get; private set; }
         public StatusNota Status { get; private set; }
 
         public void AprovarNota()
         {
             Status = StatusNota.Aprovada;
         }
+
+        
     }
 }

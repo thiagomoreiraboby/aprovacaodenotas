@@ -28,18 +28,8 @@ namespace API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AdicionarAplicacao();
+
             services.AdicionarInfra();
-
-
-            //services.AddCors(options => {
-            //    options.AddDefaultPolicy(builder => builder
-            //        .SetIsOriginAllowed(_=>true)
-            //        .AllowAnyMethod()
-            //        .AllowAnyHeader()
-            //        .AllowCredentials());
-            //});
-
-
 
             services.AddControllers();
 
@@ -64,25 +54,6 @@ namespace API
                     };
                 });
 
-
-            //services.AddSwaggerGen(x =>
-            //{
-            //    x.SwaggerDoc(name: "v1", new OpenApiInfo { Title = "Aprovação API", Version = "v1" });
-
-
-            //    x.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-            //    {
-            //        Description = "Use Autorização Bearer. Exemplo: \"Bearer {token}\"",
-            //        Name = "Authorization",
-            //        In = ParameterLocation.Header,
-            //        Type = SecuritySchemeType.ApiKey,
-            //        Scheme = "tomsAuth"
-            //    });
-
-            //    x.OperationFilter<SecurityRequirementsOperationFilter>();
-
-            //});
-
             services.AddSwaggerGen(c => {
 
                 c.SwaggerDoc(name: "v1", new OpenApiInfo { Title = "Aprovação API", Version = "v1" });
@@ -93,7 +64,7 @@ namespace API
                     Scheme = "Bearer",
                     BearerFormat = "JWT",
                     In = ParameterLocation.Header,
-                    Description = "JWT Authorization header using the Bearer scheme."
+                    Description = "JWT Authorization header using the Bearer token."
                 });
                 c.AddSecurityRequirement(new OpenApiSecurityRequirement
                 {
@@ -132,19 +103,14 @@ namespace API
 
             app.UseHttpsRedirection();
 
-          
-            
-
             app.UseRouting();
-
-            //app.UseCors();
-
 
             app.UseCors(
                 options => options.SetIsOriginAllowed(x => _ = true).AllowAnyMethod().AllowAnyHeader().AllowCredentials()
             );
 
             app.UseAuthentication();
+
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

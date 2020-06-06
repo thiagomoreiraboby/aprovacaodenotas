@@ -14,6 +14,8 @@ namespace Aplicacao.Models
         public decimal ValorFrete { get; set; }
         public decimal ValorTotal => ValorMercadorias + ValorFrete - ValorDesconto;
         public StatusNotaDTO Status { get; set; }
+        public string NStatus { get; set; }
+
 
         public void Mapping(Profile profile)
         {

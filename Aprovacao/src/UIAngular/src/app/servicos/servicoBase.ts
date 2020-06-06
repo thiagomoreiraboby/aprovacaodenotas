@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
-import { throwError} from 'rxjs';
+import { HttpClient, HttpHeaders, HttpErrorResponse, HttpParams } from '@angular/common/http';
+import { throwError, BehaviorSubject, Observable} from 'rxjs';
+import { usuario } from '../Model/usuario';
 
 
 
@@ -11,23 +12,41 @@ import { throwError} from 'rxjs';
 export class servicoBase {
 
   caminhoApi = environment.API_URL;
+  protected usuarioLogadoSubject: BehaviorSubject<usuario>;
+  public usuarioLogado: usuario;
+  public moduloadm: boolean;
+
+
+
   // Headers
-  httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+  protected getHttpHeaders(): HttpHeaders{
+    let header = new HttpHeaders().append('Content-Type', 'application/json');
+    if(this.usuarioLogado != null){
+      header = new HttpHeaders()
+      .append("Content-Type", "application/json")
+      .append("Authorization", "Bearer " +  this.usuarioLogado.tokenapi);
+    }
+    return header;
   }
 
-
 constructor(protected httpClient: HttpClient) {
+  this.usuarioLogadoSubject = new BehaviorSubject<usuario>(JSON.parse(sessionStorage.getItem('usuariologado')));
+  this.usuarioLogadoSubject.subscribe((user: usuario)=> {
+    this.usuarioLogado = user;
+    if(user.papel == "Adm"){
+      this.moduloadm = false;
+    }
+    else this.moduloadm = true;
+  });
 
 }
+
 
 handleError(error: HttpErrorResponse) {
   let errorMessage = '';
   if (error.error instanceof ErrorEvent) {
-    // Erro ocorreu no lado do client
     errorMessage = error.error.message;
   } else {
-    // Erro ocorreu no lado do servidor
     errorMessage = `Código do erro: ${error.status}, ` + `menssagem: ${error.message}`;
   }
   console.log(errorMessage);

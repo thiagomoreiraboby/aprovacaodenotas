@@ -2,8 +2,6 @@ import { Injectable } from '@angular/core';
 import { servicoBase } from './servicoBase';
 import { catchError, retry, map } from 'rxjs/operators';
 import { Observable, BehaviorSubject } from 'rxjs';
-import { usuario } from '../Model/usuario';
-import { HttpClient } from '@angular/common/http';
 
 
 @Injectable({
@@ -12,18 +10,10 @@ import { HttpClient } from '@angular/common/http';
 export class UsuarioService extends servicoBase {
 
 caminhoservico = this.caminhoApi+"/api/v1/Usuario/";
-private usuarioLogadoSubject: BehaviorSubject<usuario>;
-public usuarioLogado: Observable<usuario>;
-
-constructor(private http: HttpClient) {
-  super(http);
-  this.usuarioLogadoSubject = new BehaviorSubject<usuario>(JSON.parse(sessionStorage.getItem('usuariologado')));
-  this.usuarioLogado = this.usuarioLogadoSubject.asObservable();
-}
 
 
 autenticarApi(login, senha): Observable<any>{
-  return this.httpClient.post<any>(this.caminhoservico+"Autenticar", JSON.stringify({login, senha}), this.httpOptions)
+  return this.httpClient.post<any>(this.caminhoservico+"Autenticar", JSON.stringify({login, senha}), {headers: this.getHttpHeaders()})
   .pipe(map(usua => {
     sessionStorage.setItem('usuariologado', JSON.stringify(usua));
     this.usuarioLogadoSubject.next(usua);
@@ -33,9 +23,14 @@ autenticarApi(login, senha): Observable<any>{
 }
 
 logout() {
-  // remove user from local storage and set current user to null
-  localStorage.removeItem('currentUser');
+  sessionStorage.removeItem('usuariologado');
   this.usuarioLogadoSubject.next(null);
+}
+
+pesquisartodos(): Observable<any[]>{
+  return this.httpClient.get<any[]>(this.caminhoservico, { headers: this.getHttpHeaders()} )
+  .pipe(
+    catchError(this.handleError));
 }
 
 }

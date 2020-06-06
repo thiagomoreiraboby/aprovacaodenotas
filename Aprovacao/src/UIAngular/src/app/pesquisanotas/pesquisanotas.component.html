@@ -1,1 +1,45 @@
-<p>pesquisanotas works!</p>
+<div class="row">
+    <form class="form-inline">
+
+        <div class="form-group mb-2">
+            <label for="staticEmail2" class="sr-only">Email</label>
+            <input class="form-control" name="datainicio" [(ngModel)]="datainicio" type="date">
+        </div>
+        <div class="form-group mx-sm-3 mb-2">
+            <label for="inputPassword2" class="sr-only">Password</label>
+            <input class="form-control" name="datafim" [(ngModel)]="datafim" type="date">
+        </div>
+        <button type="button" class="btn btn-primary mx-sm-3 mb-2" (click)="pesquisarNotas()">Pesquisar</button>
+        <button type="button" class="btn btn-primary mb-2" (click)="limparpesquisa()">Limpar Pesquisa</button>
+    </form>
+</div>
+
+<div class="row">
+    <h1>Notas</h1>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Data Emissão</th>
+                <th scope="col">Valor Mercadorias</th>
+                <th scope="col">Valor Desconto</th>
+                <th scope="col">Valor Frete</th>
+                <th scope="col">Valor Total</th>
+                <th *ngIf="moduloadm" scope="col">Ação</th>
+                <th *ngIf="!moduloadm" scope="col">Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let item of notas">
+                <td>{{ item.dataEmissao | date:'dd/MM/yyyy' }}</td>
+                <td>{{ item.valorMercadorias | currency:'R$' }}</td>
+                <td>{{ item.valorDesconto | currency:'R$' }}</td>
+                <td>{{ item.valorFrete | currency:'R$' }}</td>
+                <td>{{ item.valorTotal | currency:'R$'}}</td>
+                <td *ngIf="moduloadm">
+                    <button class="btn btn-primary mb-2" type="button" (click)="aprovacaodeNotas(item.id)">{{nomepapel}}</button>
+                </td>
+                <td *ngIf="!moduloadm">{{ item.nStatus }}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
