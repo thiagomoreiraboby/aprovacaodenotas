@@ -15,17 +15,15 @@ caminhoservico = this.caminhoApi+"/api/v1/Usuario/";
 autenticarApi(login, senha): Observable<any>{
   return this.httpClient.post<any>(this.caminhoservico+"Autenticar", JSON.stringify({login, senha}), {headers: this.getHttpHeaders()})
   .pipe(map(usua => {
-    sessionStorage.setItem('usuariologado', JSON.stringify(usua));
-    this.usuarioLogadoSubject.next(usua);
+      sessionStorage.setItem('usuariologado', JSON.stringify(usua));
+      this.usuarioLogadoSubject.next(usua);
     return usua;
   }),
-    catchError(this.handleError));
+    catchError(this.handleError)
+    );
 }
 
-logout() {
-  sessionStorage.removeItem('usuariologado');
-  this.usuarioLogadoSubject.next(null);
-}
+
 
 pesquisartodos(): Observable<any[]>{
   return this.httpClient.get<any[]>(this.caminhoservico, { headers: this.getHttpHeaders()} )

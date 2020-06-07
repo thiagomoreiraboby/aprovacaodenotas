@@ -13,11 +13,6 @@ namespace Aplicacao.Interfaces
         DbSet<AutorizacaoConfig> AutorizacaoConfigs { get; set; }
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 
-        Task BeginTransactionAsync(CancellationToken cancellationToken);
-
-        Task CommitTransactionAsync();
-
-        void RollbackTransaction();
 
     }
 }

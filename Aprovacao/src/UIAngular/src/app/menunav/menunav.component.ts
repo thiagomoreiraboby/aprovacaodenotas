@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { UsuarioService } from '../servicos/usuario.service';
 import { Router, NavigationEnd } from '@angular/router';
+import { servicoBase } from '../servicos/servicoBase';
 
 @Component({
   selector: 'app-menunav',
@@ -20,15 +21,26 @@ export class MenunavComponent implements OnInit {
    }
 
   ngOnInit(): void {
-      if(this.servico.usuarioLogado != null){
-        this.logout = false;
-        this.NomeUsuario = this.servico.usuarioLogado.nome;
-        this.moduloadm = this.servico.moduloadm;
-      }
-      else{
-        this.logout = true;
-        this.NomeUsuario = "";
-      }
+    servicoBase.autenticacaousuario.subscribe(
+      (retorno: boolean)=>{
+          this.ValidarUsuario();
+        }
+      
+    );
+
+      this.ValidarUsuario();
+  }
+
+  private ValidarUsuario() {
+    if (this.servico.usuarioLogado != null) {
+      this.logout = false;
+      this.NomeUsuario = this.servico.usuarioLogado.nome;
+      this.moduloadm = this.servico.moduloadm;
+    }
+    else {
+      this.logout = true;
+      this.NomeUsuario = "";
+    }
   }
 
   LogoutSistema(){

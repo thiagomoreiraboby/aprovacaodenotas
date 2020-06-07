@@ -42,9 +42,14 @@ export class PesquisanotasComponent implements OnInit {
   }
   aprovacaodeNotas(idNota): void {
     this.servico.aprovarnota(idNota).subscribe((retorno: boolean)=> {
-      if(retorno)
-      this.pesquisarNotas();
-    });
+        this.servico.emitirMensagemSucesso(`Operação de ${this.nomepapel} foi executada com sucesso!`)
+        this.pesquisarNotas();
+
+    },
+      error => {
+        this.servico.emitirMensagemAlerta(`Erro ao ${this.nomepapel} está nota!`)
+      }
+      );
   }
 
 }

@@ -28,12 +28,10 @@ namespace Aplicacao.Usuarios.Queries
 
         public async Task<IList<UsuarioDTO>> Handle(ListarUsuariosQuery request, CancellationToken cancellationToken)
         {
-            var lista = await _context.Usuarios
+            return await _context.Usuarios
                 .ProjectTo<UsuarioDTO>(_mapper.ConfigurationProvider)
                 .OrderBy(t => t.Login)
                 .ToListAsync(cancellationToken);
-            lista.ForEach(x => x.NPapel = x.Papel.ToString());
-            return lista;
 
         }
     }

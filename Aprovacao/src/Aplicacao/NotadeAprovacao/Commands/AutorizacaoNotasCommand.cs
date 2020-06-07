@@ -26,7 +26,6 @@ namespace Aplicacao.NotadeAprovacao.Commands
         {
             try
             {
-                //await _context.BeginTransactionAsync(cancellationToken);
                 var usuario = _context.Usuarios.SingleOrDefault(x => x.Id == request.IdUsuario);
                 var nota = _context.NotadeCompras.SingleOrDefault(x => x.Id == request.IdNota);
 
@@ -46,7 +45,6 @@ namespace Aplicacao.NotadeAprovacao.Commands
             }
             catch (Exception ex)
             {
-                //_context.RollbackTransaction();
                 return false;
             }
 

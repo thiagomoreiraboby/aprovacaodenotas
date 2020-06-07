@@ -13,6 +13,7 @@ import { HomeComponent } from './home/home.component';
 import { PesquisanotasComponent } from './pesquisanotas/pesquisanotas.component';
 import { LoginComponent } from './login/login.component';
 import { PesquisausuariosComponent } from './pesquisausuarios/pesquisausuarios.component';
+import { MensagemComponent } from './mensagem/mensagem.component';
 
 
 
@@ -25,7 +26,8 @@ import { PesquisausuariosComponent } from './pesquisausuarios/pesquisausuarios.c
     HomeComponent,
     PesquisanotasComponent,
     LoginComponent,
-    PesquisausuariosComponent
+    PesquisausuariosComponent,
+    MensagemComponent
   ],
   imports: [
     BrowserModule,

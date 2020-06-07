@@ -10,14 +10,15 @@
                     <li class="nav-item " [routerLinkActive]="[ 'link-active'] ">
                         <a class="nav-link text-dark " [routerLink]="[ '/'] ">Home</a>
                     </li>
-                    <li *ngIf="logout" class="nav-item " [routerLinkActive]="[ 'link-active'] ">
-                        <a class="nav-link text-dark " [routerLink]="[ '/Autenticacao'] ">Login</a>
-                    </li>
-                    <li *ngIf="!logout" class="nav-item " [routerLinkActive]="[ 'link-active'] ">
+
+                    <li class="nav-item " [routerLinkActive]="[ 'link-active'] ">
                         <a class="nav-link text-dark " [routerLink]="[ '/notascompras'] ">Notas de Compra</a>
                     </li>
                     <li *ngIf="!logout && !moduloadm" class="nav-item " [routerLinkActive]="[ 'link-active'] ">
                         <a class="nav-link text-dark " [routerLink]="[ '/usuarios'] ">Usuários</a>
+                    </li>
+                    <li *ngIf="logout" class="nav-item " [routerLinkActive]="[ 'link-active'] ">
+                        <a class="nav-link text-dark " [routerLink]="[ '/Autenticacao'] ">Login</a>
                     </li>
                     <li *ngIf="!logout" class="nav-item " [routerLinkActive]="[ 'link-active'] ">
                         <a class="nav-link text-dark " href="" (click)="LogoutSistema()">Logout - {{ NomeUsuario }}</a>

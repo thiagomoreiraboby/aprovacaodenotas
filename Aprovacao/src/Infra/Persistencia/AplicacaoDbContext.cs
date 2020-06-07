@@ -30,56 +30,6 @@ namespace Infra.Interfaces.Persistencia
         {
                 return base.SaveChangesAsync(cancellationToken);
         }
-
-        public async Task BeginTransactionAsync(CancellationToken cancellationToken = new CancellationToken())
-        {
-            if (_currentTransaction != null)
-            {
-                return;
-            }
-
-            _currentTransaction = await base.Database.BeginTransactionAsync(cancellationToken);
-        }
-
-        public async Task CommitTransactionAsync()
-        {
-            try
-            {
-                await SaveChangesAsync().ConfigureAwait(false);
-
-                _currentTransaction?.Commit();
-            }
-            catch
-            {
-                RollbackTransaction();
-                throw;
-            }
-            finally
-            {
-                if (_currentTransaction != null)
-                {
-                    _currentTransaction.Dispose();
-                    _currentTransaction = null;
-                }
-            }
-        }
-
-        public void RollbackTransaction()
-        {
-            try
-            {
-                _currentTransaction?.Rollback();
-            }
-            finally
-            {
-                if (_currentTransaction != null)
-                {
-                    _currentTransaction.Dispose();
-                    _currentTransaction = null;
-                }
-            }
-        }
-
         protected override void OnModelCreating(ModelBuilder builder)
         {
             builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());

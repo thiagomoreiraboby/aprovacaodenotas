@@ -42,10 +42,7 @@ namespace Aplicacao.NotadeAprovacao.Queries
             //teste adm
             if (usuario.Papel == PapelAprovacao.Adm)
             {
-                listaresultado = await _context.NotadeCompras.ProjectTo<NotadeCompraDTO>(_mapper.ConfigurationProvider).OrderBy(o => o.DataEmissao).ToListAsync(cancellationToken);
-                listaresultado.ForEach(x => x.NStatus = x.Status.ToString());
-
-                return listaresultado;
+                return await _context.NotadeCompras.ProjectTo<NotadeCompraDTO>(_mapper.ConfigurationProvider).OrderBy(o => o.DataEmissao).ToListAsync(cancellationToken);
             }
 
 

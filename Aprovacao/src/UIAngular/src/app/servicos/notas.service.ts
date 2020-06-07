@@ -18,7 +18,8 @@ aprovarnota(idNota): Observable<any>{
 
   return this.httpClient.post<any>(this.caminhoservico, JSON.stringify({idUsuario, idNota}), {headers: this.getHttpHeaders()})
   .pipe(
-    catchError(this.handleError));
+    //catchError(this.handleError)
+    );
 }
 
 
@@ -31,7 +32,8 @@ pesquisarnotas(dataIncio?, dataFim?): Observable<any[]>{
   }
   return this.httpClient.get<any[]>(this.caminhoservico, { headers: this.getHttpHeaders(), params: parametros} )
   .pipe(
-    catchError(this.handleError));
+    catchError(this.handleError)
+    );
 }
 
 

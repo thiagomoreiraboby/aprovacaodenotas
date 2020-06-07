@@ -2,8 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { UsuarioService } from '../servicos/usuario.service';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { usuario } from '../Model/usuario';
-
+import { servicoBase } from '../servicos/servicoBase';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -45,14 +44,16 @@ export class LoginComponent implements OnInit {
   }
   this.loading = true;
     this.servico.autenticarApi(this.f.Usuario.value, this.f.Senha.value).subscribe(
-      () => {
+      (user) => {
+        servicoBase.autenticacaousuario.next(true);
         this.router.navigate([this.returnUrl]);
-        window.location.reload();
+        this.servico.emitirMensagemSucesso("Usuário autenticado com sucesso")
       },
-      error =>{
-        this.loading = false;
-    });
-
+      error => {
+        this.servico.emitirMensagemAlerta("Usuário não autenticado!")
+      }
+    );
+    this.loading = false;
 
   }
 

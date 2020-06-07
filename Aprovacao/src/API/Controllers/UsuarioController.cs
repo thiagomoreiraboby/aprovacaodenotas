@@ -17,7 +17,12 @@ namespace API.Controllers
         {
             var usuario = Mediator.Send(logarUsuarios).Result;
             if(usuario == null)
-                return NotFound(new { message = "Usuário ou senha inválidos" });
+                return NotFound(
+                    new
+                    {
+                        Mensagem = "Usuário ou senha inválidos.",
+                        Erro = true
+                    });
             return new
             {
                 codigo = usuario.Id,
